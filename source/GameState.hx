@@ -22,6 +22,8 @@ class GameState extends FlxState
 		super.update(elapsed);
 	}
 
+	// thanks vidyagirl for the inline shit
+
 	public inline function transIn(color:FlxColor, desiredState:FlxState)
 	{
 		this.desiredState = desiredState;
@@ -37,7 +39,7 @@ class GameState extends FlxState
 		FlxTween.tween(transitionSprite, {x: FlxG.width}, 0.5, {ease: FlxEase.quintInOut});
 	}
 
-	function inline switchThing(tween:FlxTween)
+	inline function switchThing(tween:FlxTween)
 	{
 		remove(transitionSprite);
 		FlxG.switchState(desiredState);
