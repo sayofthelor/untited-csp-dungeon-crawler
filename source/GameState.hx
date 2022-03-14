@@ -10,7 +10,6 @@ import flixel.util.FlxColor;
 class GameState extends FlxState
 {
 	var transitionSprite:FlxSprite;
-	var desiredState:FlxState;
 
 	override function create()
 	{
@@ -26,22 +25,15 @@ class GameState extends FlxState
 
 	public inline function transIn(color:FlxColor, desiredState:FlxState)
 	{
-		this.desiredState = desiredState;
 		transitionSprite = new FlxSprite(-FlxG.width, 0).makeGraphic(FlxG.width, FlxG.height, color, false);
 		add(transitionSprite);
-		FlxTween.tween(transitionSprite, {x: 0}, 0.5, {ease: FlxEase.quintInOut, onComplete: switchThing});
+		FlxTween.tween(transitionSprite, {x: 0}, 0.5, {ease: FlxEase.quintInOut, onComplete: function(twn:FlxTween) {FlxG.switchState(desiredState);}});
 	}
 
 	public inline function transOut(color:FlxColor)
 	{
 		transitionSprite = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, color, false);
 		add(transitionSprite);
-		FlxTween.tween(transitionSprite, {x: FlxG.width}, 0.5, {ease: FlxEase.quintInOut});
-	}
-
-	inline function switchThing(tween:FlxTween)
-	{
-		remove(transitionSprite);
-		FlxG.switchState(desiredState);
+		FlxTween.tween(transitionSprite, {x: FlxG.width}, 0.5, {ease: FlxEase.quintInOut, onComplete: function(twn:FlxTween) {remove(transitionSprite);}});
 	}
 }
