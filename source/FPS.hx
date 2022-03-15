@@ -2,17 +2,15 @@ package;
 
 // mostly just openfl.display.FPS, but with some nice extras
 // also removing all of the flash stuff because who the hell uses flash anyway?
-
+import openfl.Lib;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
-import openfl.Lib;
 
 // Credits to OpenFL repository for the original code
 #if !openfl_debug
 @:fileXml('tags="haxe,release"')
 @:noDebug
 #end
-
 class FPS extends TextField
 {
 	public var currentFPS(default, null):Int;
@@ -26,13 +24,15 @@ class FPS extends TextField
 		super();
 
 		this.x = x;
-		this.y = y;
 		width = Lib.application.window.width;
 		currentFPS = 0;
 		selectable = false;
 		mouseEnabled = false;
 		defaultTextFormat = new TextFormat("VCR OSD Mono", 16, color);
-		text = "0 FPS";
+		text = #if debug "DEV BUILD\n" + #end
+		"0 FPS";
+		height = #if debug 35 #else 16 #end;
+		this.y = Lib.application.window.height - height - 3;
 
 		cacheCount = 0;
 		currentTime = 0;
@@ -40,6 +40,7 @@ class FPS extends TextField
 	}
 
 	// Event Handlers
+
 	@:noCompletion
 	private override function __enterFrame(deltaTime:Float):Void
 	{
@@ -54,9 +55,10 @@ class FPS extends TextField
 		var currentCount = times.length;
 		currentFPS = Math.round((currentCount + cacheCount) / 2);
 
-		if (currentCount != cacheCount )
+		if (currentCount != cacheCount)
 		{
-			text = #if debug "DEV BUILD\n" + #end currentFPS + " FPS";
+			text = #if debug "DEV BUILD\n" + #end
+			currentFPS + " FPS";
 		}
 
 		cacheCount = currentCount;

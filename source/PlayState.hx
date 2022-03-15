@@ -2,6 +2,7 @@ package;
 
 import Coin;
 import GameState;
+import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.addons.editors.ogmo.FlxOgmo3Loader;
@@ -19,6 +20,9 @@ class PlayState extends GameState
 	var map:FlxOgmo3Loader;
 	var walls:FlxTilemap;
 	var coins:FlxTypedGroup<Coin>;
+	var collectedCoins:Int = 0;
+	var totalCoinAmt:Int = 0;
+	var hudCam:FlxCamera;
 
 	override public function create()
 	{
@@ -57,6 +61,7 @@ class PlayState extends GameState
 		}
 		if (entity.name == "coin")
 		{
+			totalCoinAmt += 1;
 			coins.add(new Coin(entity.x + 4, entity.y + 4));
 		}
 	}
@@ -65,6 +70,7 @@ class PlayState extends GameState
 	{
 		if (player.alive && player.exists && coin.alive && coin.exists)
 		{
+			collectedCoins += 1;
 			coin.kill();
 		}
 	}

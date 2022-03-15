@@ -14,7 +14,7 @@ class Main extends Sprite
 		super();
 		FlxG.save.bind('sayofthelor', 'DC');
 		fpsCounter = new FPS(3, 3, 0xFFFFFF);
-		addChild(new FlxGame(0, 0, TitleScreenState, 1, 60, 60, false, false));
+		addChild(new FlxGame(0, 0, TitleScreenState, 1, 120, 120, false, false));
 		#if !mobile
 		addChild(fpsCounter);
 		#end

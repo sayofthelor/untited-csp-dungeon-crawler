@@ -21,16 +21,19 @@ class TitleScreenState extends GameState
 		text.alignment = CENTER;
 		text.screenCenter(X);
 		add(text);
-		var funFactText = new FlxText(3, 50, 0, "FUN FACT: ", 16, true);
+		var funFactText = new FlxText(3, 3, 0, "FUN FACT: ", 16, true);
 		if (funFactsArray == null)
 			funFactText.text += "funFacts.txt is empty!"
 		else
 			funFactText.text += funFactsArray[new FlxRandom().int(0, funFactsArray.length - 1)];
 		add(funFactText);
 		FlxTween.tween(text, {y: 200, angle: 0}, 2, {ease: FlxEase.quintOut});
-		var playButton:FlxButton = new FlxButton(10, 600, "Play", playGame);
+		var playButton:FlxButton = new FlxButton(10, 500, "Play", playGame);
 		playButton.screenCenter(X);
 		add(playButton);
+		var optionsButton:FlxButton = new FlxButton(10, 505 + playButton.height, "Options", playGame);
+		optionsButton.screenCenter(X);
+		add(optionsButton);
 		super.create();
 	}
 
