@@ -80,6 +80,7 @@ class PlayerController extends FlxSprite
                                     animation.play("u");
                                 case FlxObject.DOWN:
                                     animation.play("d");
+                                case _:
                             }
                         }
                 }               
