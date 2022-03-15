@@ -29,6 +29,7 @@ class PlayState extends GameState
 		walls.setTileProperties(1, FlxObject.NONE);
 		walls.setTileProperties(2, FlxObject.ANY);
 		add(walls);
+		coins = new FlxTypedGroup<Coin>();
 		add(coins);
 		player = new PlayerController();
 		map.loadEntities(placeEnts, "entities");
