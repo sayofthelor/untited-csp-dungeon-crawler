@@ -29,7 +29,7 @@ class PlayState extends GameState
 	override public function create()
 	{
 		FlxG.camera.zoom = 2;
-		map = new FlxOgmo3Loader(AssetPaths.dungeonCrawlSomeBitchesLmao__ogmo, AssetPaths.lev1__json);
+		map = new FlxOgmo3Loader(AssetPaths.crawl__ogmo, AssetPaths.lev1__json);
 		walls = map.loadTilemap(AssetPaths.tiles__png, "walls");
 		walls.follow();
 		walls.setTileProperties(1, FlxObject.NONE);

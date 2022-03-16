@@ -44,6 +44,6 @@ class TitleScreenState extends GameState
 
 	function playGame()
 	{
-		transIn(FlxColor.RED, new PlayState());
+		transIn(FlxColor.RED, new LoadingState(FlxColor.RED, new PlayState()));
 	}
 }

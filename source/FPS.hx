@@ -7,10 +7,6 @@ import openfl.text.TextField;
 import openfl.text.TextFormat;
 
 // Credits to OpenFL repository for the original code
-#if !openfl_debug
-@:fileXml('tags="haxe,release"')
-@:noDebug
-#end
 class FPS extends TextField
 {
 	public var currentFPS(default, null):Int;
@@ -31,7 +27,7 @@ class FPS extends TextField
 		defaultTextFormat = new TextFormat("VCR OSD Mono", 16, color);
 		text = #if debug "DEV BUILD\n" + #end
 		"0 FPS";
-		height = #if debug 35 #else 16 #end;
+		height = #if debug 35 #else 19 #end;
 		this.y = Lib.application.window.height - height - 3;
 
 		cacheCount = 0;
@@ -39,9 +35,6 @@ class FPS extends TextField
 		times = [];
 	}
 
-	// Event Handlers
-
-	@:noCompletion
 	private override function __enterFrame(deltaTime:Float):Void
 	{
 		this.y = Lib.application.window.height - height - 3;
