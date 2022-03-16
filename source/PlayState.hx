@@ -2,6 +2,7 @@ package;
 
 import Coin;
 import GameState;
+import HUD;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxObject;
@@ -22,7 +23,8 @@ class PlayState extends GameState
 	var coins:FlxTypedGroup<Coin>;
 	var collectedCoins:Int = 0;
 	var totalCoinAmt:Int = 0;
-	var hudCam:FlxCamera;
+	var health:Int = 3;
+	var hud:HUD;
 
 	override public function create()
 	{
@@ -41,6 +43,8 @@ class PlayState extends GameState
 		add(playerTrail);
 		add(player);
 		FlxG.camera.follow(player, TOPDOWN, 1);
+		hud = new HUD();
+		add(hud);
 		transOut(FlxColor.RED);
 		super.create();
 	}
@@ -50,6 +54,7 @@ class PlayState extends GameState
 		super.update(elapsed);
 		FlxG.collide(player, walls);
 		FlxG.overlap(player, coins, collectCoin);
+		hud.updateStuff(health, collectedCoins);
 	}
 
 	function placeEnts(entity:EntityData)
@@ -61,7 +66,6 @@ class PlayState extends GameState
 		}
 		if (entity.name == "coin")
 		{
-			totalCoinAmt += 1;
 			coins.add(new Coin(entity.x + 4, entity.y + 4));
 		}
 	}
@@ -70,7 +74,7 @@ class PlayState extends GameState
 	{
 		if (player.alive && player.exists && coin.alive && coin.exists)
 		{
-			collectedCoins += 1;
+			collectedCoins++;
 			coin.kill();
 		}
 	}

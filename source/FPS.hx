@@ -44,6 +44,7 @@ class FPS extends TextField
 	@:noCompletion
 	private override function __enterFrame(deltaTime:Float):Void
 	{
+		this.y = Lib.application.window.height - height - 3;
 		currentTime += deltaTime;
 		times.push(currentTime);
 
