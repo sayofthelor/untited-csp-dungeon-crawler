@@ -14,6 +14,7 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.ui.FlxBar;
 import flixel.util.FlxColor;
+import openfl.Lib;
 
 using flixel.util.FlxSpriteUtil;
 
@@ -33,8 +34,8 @@ enum Outcome
 
 enum Choice
 {
-	FIGHT;
-	FLEE;
+	HIT;
+	RUN;
 }
 
 class Combat extends FlxTypedGroup<FlxSprite>
@@ -87,45 +88,44 @@ class Combat extends FlxTypedGroup<FlxSprite>
 		add(waveSprite);
 
 		// first, create our background. Make a black square, then draw borders onto it in white. Add it to our group.
-		background = new FlxSprite().makeGraphic(120, 120, FlxColor.WHITE);
-		background.drawRect(1, 1, 118, 44, FlxColor.BLACK);
-		background.drawRect(1, 46, 118, 73, FlxColor.BLACK);
-		background.screenCenter();
-		add(background);
+		background = new FlxSprite().makeGraphic(120, 75, FlxColor.WHITE);
+		background.drawRect(1, 1, 118, 73, FlxColor.BLACK);
+		background.x = 345;
+		background.y = 720 - 180 - background.height - 25;
 
 		// next, make a 'dummy' playerSprite that looks like our playerSprite (but can't move) and add it.
-		playerSprite = new PlayerController(background.x + 36, background.y + 16);
-		playerSprite.animation.frameIndex = 3;
+		playerSprite = new PlayerController(background.x + 30, background.y - 25);
+		playerSprite.animation.frameIndex = 6;
+		playerSprite.scale.x = playerSprite.scale.y = 4;
 		playerSprite.active = false;
 		playerSprite.facing = RIGHT;
-		add(playerSprite);
 
 		// do the same thing for an enemySprite. We'll just use enemySprite type REGULAR for now and change it later.
-		enemySprite = new EnemyController(background.x + 76, background.y + 16, NORMAL);
-		enemySprite.animation.frameIndex = 3;
+		enemySprite = new EnemyController(background.x + 76, background.y - 45, NORMAL);
+		enemySprite.scale.x = enemySprite.scale.y = 6;
+		enemySprite.animation.frameIndex = 0;
 		enemySprite.active = false;
-		enemySprite.facing = LEFT;
 		add(enemySprite);
-
+		add(playerSprite);
+		add(background);
 		// setup the playerSprite's health display and add it to the group.
-		playerHealthCounter = new FlxText(0, playerSprite.y + playerSprite.height + 2, 0, "3 / 3", 8);
+		playerHealthCounter = new FlxText(playerSprite.x + 24, playerSprite.y - 35, 0, "3 / 3", 8);
 		playerHealthCounter.alignment = CENTER;
-		playerHealthCounter.x = playerSprite.x + 4 - (playerHealthCounter.width / 2);
 		add(playerHealthCounter);
 
 		// create and add a FlxBar to show the enemySprite's health. We'll make it Red and Yellow.
-		enemyHealthBar = new FlxBar(enemySprite.x - 6, playerHealthCounter.y, LEFT_TO_RIGHT, 20, 10);
+		enemyHealthBar = new FlxBar(enemySprite.x + 18, enemySprite.y - 55, LEFT_TO_RIGHT, 20, 10);
 		enemyHealthBar.createFilledBar(0xffdc143c, FlxColor.YELLOW, true, FlxColor.YELLOW);
 		add(enemyHealthBar);
 
 		// create our choices and add them to the group.
 		choices = new Map();
-		choices[FIGHT] = new FlxText(background.x + 30, background.y + 48, 85, "FIGHT", 22);
-		choices[FLEE] = new FlxText(background.x + 30, choices[FIGHT].y + choices[FIGHT].height + 8, 85, "FLEE", 22);
-		add(choices[FIGHT]);
-		add(choices[FLEE]);
+		choices[HIT] = new FlxText(background.x + 30, background.y + 3, 85, "HIT", 22);
+		choices[RUN] = new FlxText(background.x + 30, choices[HIT].y + choices[HIT].height + 8, 85, "RUN", 22);
+		add(choices[HIT]);
+		add(choices[RUN]);
 
-		pointer = new FlxSprite(background.x + 10, choices[FIGHT].y + (choices[FIGHT].height / 2) - 8, AssetPaths.pointer__png);
+		pointer = new FlxSprite(background.x + 10, choices[HIT].y + (choices[HIT].height / 2) - 8, AssetPaths.pointer__png);
 		pointer.visible = false;
 		add(pointer);
 
@@ -208,7 +208,7 @@ class Combat extends FlxTypedGroup<FlxSprite>
 		pointer.visible = false;
 		results.visible = false;
 		outcome = NONE;
-		selected = FIGHT;
+		selected = HIT;
 		movePointer();
 
 		visible = true; // make our hud visible (so draw gets called on it) - note, it's not active, yet!
@@ -296,7 +296,7 @@ class Combat extends FlxTypedGroup<FlxSprite>
 		else if (up || down)
 		{
 			// if the playerSprite presses up or down, we move the cursor up or down (with wrapping)
-			selected = if (selected == FIGHT) FLEE else FIGHT;
+			selected = if (selected == HIT) RUN else HIT;
 			selectSound.play();
 			movePointer();
 		}
@@ -340,8 +340,8 @@ class Combat extends FlxTypedGroup<FlxSprite>
 		pointer.visible = false; // hide our pointer
 		switch (selected) // check which item was selected when the playerSprite picked it
 		{
-			case FIGHT:
-				// if FIGHT was picked...
+			case HIT:
+				// if HIT was picked...
 				// ...the playerSprite attacks the enemySprite first
 				// they have an 85% chance to hit the enemySprite
 				if (FlxG.random.bool(85))
@@ -381,8 +381,8 @@ class Combat extends FlxTypedGroup<FlxSprite>
 				FlxTween.num(damages[0].y, damages[0].y - 12, 1, {ease: FlxEase.circOut}, updateDamageY);
 				FlxTween.num(0, 1, .2, {ease: FlxEase.circInOut, onComplete: doneDamageIn}, updateDamageAlpha);
 
-			case FLEE:
-				// if the playerSprite chose to FLEE, we'll give them a 50/50 chance to escape
+			case RUN:
+				// if the playerSprite chose to RUN, we'll give them a 50/50 chance to escape
 				if (FlxG.random.bool(50))
 				{
 					// if they succeed, we show the 'escaped' message and trigger it to fade in

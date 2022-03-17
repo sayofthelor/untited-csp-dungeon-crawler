@@ -64,12 +64,12 @@ class PlayState extends GameState
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
+		hud.updateStuff(health, collectedCoins);
 		if (inCombat)
 		{
 			if (!combat.visible)
 			{
 				health = combat.playerHealth;
-				hud.updateStuff(health, collectedCoins);
 				if (combat.outcome == VICTORY)
 				{
 					combat.enemy.kill();
