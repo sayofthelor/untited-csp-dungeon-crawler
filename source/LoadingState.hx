@@ -4,10 +4,12 @@ import GameState;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.addons.editors.ogmo.FlxOgmo3Loader;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
+import flixel.util.FlxTimer;
 
 using StringTools;
 
@@ -25,6 +27,8 @@ class LoadingState extends GameState
 		super();
 	}
 
+	public static var level:FlxOgmo3Loader;
+
 	override public function create()
 	{
 		add(new FlxSprite().makeGraphic(FlxG.width, FlxG.height, col));
@@ -37,7 +41,11 @@ class LoadingState extends GameState
 			ease: FlxEase.quintOut,
 			onComplete: function(twn:FlxTween)
 			{
-				FlxG.switchState(desiredState);
+				var frzText = new FlxText(0, loadingText.y + loadingText.height + 10, 0, "(game may look frozen, but it's not!)", 25);
+				frzText.screenCenter(X);
+				add(frzText);
+				level = new FlxOgmo3Loader(PathsAndStuff.ogmo('crawl'), PathsAndStuff.level('lev1'));
+				new FlxTimer().start(1, function(tmr:FlxTimer) FlxG.switchState(desiredState));
 			}
 		});
 		super.create();

@@ -27,7 +27,7 @@ class HUD extends FlxTypedGroup<FlxSprite>
 		healthCounter.setBorderStyle(SHADOW, FlxColor.GRAY, 1, 1);
 		healthIcon = new FlxSprite(hudBeeg.x + 4, healthCounter.y + (healthCounter.height / 2) - 4, AssetPaths.health__png);
 		coinIcon = new FlxSprite(healthCounter.x + healthCounter.width + 20, healthCounter.y + (healthCounter.height / 2) - 3, AssetPaths.coin__png);
-		coinCounter = new FlxText(coinIcon.x + 12, hudBeeg.y + 2, 0, "3 / 3", 8);
+		coinCounter = new FlxText(coinIcon.x + 12, hudBeeg.y + 2, 0, "0", 8);
 		coinCounter.setBorderStyle(SHADOW, FlxColor.GRAY, 1, 1);
 		add(hudBeeg);
 		add(healthCounter);
