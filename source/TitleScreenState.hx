@@ -13,6 +13,13 @@ using StringTools;
 class TitleScreenState extends GameState
 {
 	var funFactsArray:Array<String> = PathsAndStuff.grabText("funFacts.txt").split("\n");
+	var transingOut:Bool = false;
+
+	override public function new(transingOut:Bool = false)
+	{
+		this.transingOut = transingOut;
+		super();
+	}
 
 	override public function create()
 	{
@@ -34,6 +41,8 @@ class TitleScreenState extends GameState
 		var optionsButton:FlxButton = new FlxButton(10, 505 + playButton.height, "Options", playGame);
 		optionsButton.screenCenter(X);
 		add(optionsButton);
+		if (transingOut)
+			transOut(FlxColor.RED);
 		super.create();
 	}
 

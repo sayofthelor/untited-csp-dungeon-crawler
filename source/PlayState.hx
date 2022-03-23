@@ -64,6 +64,10 @@ class PlayState extends GameState
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
+		#if debug
+		if (FlxG.keys.pressed.SEVEN)
+			health = 0;
+		#end
 		hud.updateStuff(health, collectedCoins);
 		if (inCombat)
 		{
@@ -90,6 +94,8 @@ class PlayState extends GameState
 			FlxG.collide(enemies, walls);
 			enemies.forEachAlive(checkEnemyVision);
 			FlxG.overlap(player, enemies, playerTouchEnemy);
+			if (health == 0)
+				transIn(FlxColor.RED, new GameOverState());
 		}
 	}
 

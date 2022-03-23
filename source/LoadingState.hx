@@ -11,8 +11,6 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 
-using StringTools;
-
 class LoadingState extends GameState
 {
 	var desiredState:FlxState;
@@ -37,7 +35,7 @@ class LoadingState extends GameState
 		yStore = loadingText.y;
 		loadingText.y = FlxG.height + 100;
 		add(loadingText);
-		FlxTween.tween(loadingText, {y: yStore}, 2, {
+		FlxTween.tween(loadingText, {y: yStore}, 1, {
 			ease: FlxEase.quintOut,
 			onComplete: function(twn:FlxTween)
 			{
@@ -45,7 +43,7 @@ class LoadingState extends GameState
 				frzText.screenCenter(X);
 				add(frzText);
 				level = new FlxOgmo3Loader(PathsAndStuff.ogmo('crawl'), PathsAndStuff.level('lev1'));
-				new FlxTimer().start(1, function(tmr:FlxTimer) FlxG.switchState(desiredState));
+				new FlxTimer().start(0.5, function(tmr:FlxTimer) FlxG.switchState(desiredState));
 			}
 		});
 		super.create();

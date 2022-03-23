@@ -198,7 +198,7 @@ class Combat extends FlxTypedGroup<FlxSprite>
 		updatePlayerHealth();
 
 		// setup our enemySprite
-		enemyMaxHealth = enemyHealth = if (enemy.type == NORMAL) 2 else 4; // each enemySprite will have health based on their type
+		enemyMaxHealth = enemyHealth = if (enemy.type == NORMAL) 2 else 5; // each enemySprite will have health based on their type
 		enemyHealthBar.value = 100; // the enemySprite's health bar starts at 100%
 		enemySprite.changeType(enemy.type); // change our enemySprite's image to match their type.
 
