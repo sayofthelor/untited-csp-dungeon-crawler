@@ -1,12 +1,14 @@
 package;
 
-import openfl.utils.Assets;
+import openfl.Assets;
 
 class PathsAndStuff
 {
 	public static inline function grabText(filename:String)
 	{
-		if (Assets.exists('assets/data/' + filename))
+		if (Assets.exists('mods/data/' + filename))
+			return Assets.getText('mods/data/' + filename);
+		else if (Assets.exists('assets/data/' + filename))
 			return Assets.getText('assets/data/' + filename);
 		else
 		{

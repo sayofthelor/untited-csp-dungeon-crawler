@@ -5,6 +5,7 @@ import GameState;
 import HUD;
 import flixel.FlxG;
 import flixel.FlxObject;
+import flixel.FlxSubState;
 import flixel.addons.editors.ogmo.FlxOgmo3Loader;
 import flixel.addons.effects.FlxTrail;
 import flixel.group.FlxGroup;
@@ -68,6 +69,8 @@ class PlayState extends GameState
 		if (FlxG.keys.pressed.SEVEN)
 			health = 0;
 		#end
+		if (FlxG.keys.pressed.ESCAPE)
+			pauseGame();
 		hud.updateStuff(health, collectedCoins);
 		if (inCombat)
 		{
@@ -168,5 +171,13 @@ class PlayState extends GameState
 		player.active = false;
 		enemies.active = false;
 		combat.initCombat(health, enemy);
+	}
+
+	var pause:PauseSubState;
+
+	function pauseGame()
+	{
+		pause = new PauseSubState();
+		openSubState(pause);
 	}
 }

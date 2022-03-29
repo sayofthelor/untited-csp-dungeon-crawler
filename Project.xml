@@ -32,6 +32,7 @@
 	<set name="BUILD_DIR" value="export" />
 	<source path="source" />
 	<assets path="assets" />
+	<assets path="mods" embed='false'/>
 	<assets path="assets/fonts" embed='true'/>
 
 	<!-- _______________________________ Libraries ______________________________ -->
@@ -46,6 +47,8 @@
 
 	<!--In case you want to use nape with flixel-->
 	<!--<haxelib name="nape-haxe4" />-->
+
+	<haxelib name="polymod" />
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
@@ -78,6 +81,9 @@
 
 	<!--Enable this for Nape release builds for a serious peformance improvement-->
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
+
+	<haxedef name="HXCPP_CHECK_POINTER" if="release"/>
+	<haxedef name="HXCPP_STACK_LINE" if="release"/>
 
 	<!-- _________________________________ Custom _______________________________ -->
 
