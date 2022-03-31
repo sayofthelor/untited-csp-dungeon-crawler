@@ -37,13 +37,13 @@ class LoadingState extends GameState
 		add(loadingText);
 		FlxTween.tween(loadingText, {y: yStore}, 1, {
 			ease: FlxEase.quintOut,
-			onComplete: function(twn:FlxTween)
+			onComplete: function(_)
 			{
 				var frzText = new FlxText(0, loadingText.y + loadingText.height + 10, 0, "(game may look frozen, but it's not!)", 25);
 				frzText.screenCenter(X);
 				add(frzText);
-				level = new FlxOgmo3Loader(PathsAndStuff.ogmo('crawl'), PathsAndStuff.level('lev1'));
-				new FlxTimer().start(0.5, function(tmr:FlxTimer) FlxG.switchState(desiredState));
+				level = new FlxOgmo3Loader(PathsAndStuff.ogmo(TitleScreenState.ogmoName), PathsAndStuff.level(TitleScreenState.levName));
+				new FlxTimer().start(0.5, function(_) FlxG.switchState(desiredState));
 			}
 		});
 		super.create();

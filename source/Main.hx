@@ -28,7 +28,8 @@ class Main extends Sprite
 		#if desktop
 		trace("Loading mods...");
 		Polymod.init({
-			modRoot: "./mods",
+			modRoot: "./",
+			dirs: ['mods'],
 			framework: FLIXEL
 		});
 		trace("Mods loaded.\nThese should auto-refresh if you want to open a custom level,\nbut if they don't, just restart the game.");
@@ -75,7 +76,7 @@ class Main extends Sprite
 		}
 
 		errorMessage += "\nWe've got an error!\n\n"
-			+ errorCrashFunnies[new FlxRandom().int(0, errorCrashFunnies.length)]
+			+ errorCrashFunnies[new FlxRandom().int(0, errorCrashFunnies.length - 1)]
 			+ "\n\nHere's what's up: "
 			+ e.error
 			+ "\nPlease report this bug at http://github.com/sayofthelor/untitled-csp-dungeon-crawler.";

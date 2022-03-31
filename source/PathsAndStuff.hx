@@ -19,7 +19,9 @@ class PathsAndStuff
 
 	public static inline function level(filename:String)
 	{
-		if (Assets.exists('assets/data/levels/' + filename + '.json'))
+		if (Assets.exists('mods/data/levels/' + filename + '.json'))
+			return 'mods/data/levels/' + filename + '.json'
+		else if (Assets.exists('assets/data/levels/' + filename + '.json'))
 			return 'assets/data/levels/' + filename + '.json'
 		else
 		{
@@ -30,7 +32,9 @@ class PathsAndStuff
 
 	public static inline function ogmo(filename:String)
 	{
-		if (Assets.exists('assets/data/levels/' + filename + '.ogmo'))
+		if (Assets.exists('mods/data/levels/' + filename + '.ogmo'))
+			return 'mods/data/levels/' + filename + '.ogmo'
+		else if (Assets.exists('assets/data/levels/' + filename + '.ogmo'))
 			return 'assets/data/levels/' + filename + '.ogmo'
 		else
 		{

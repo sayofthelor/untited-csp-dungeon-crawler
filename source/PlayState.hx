@@ -5,7 +5,6 @@ import GameState;
 import HUD;
 import flixel.FlxG;
 import flixel.FlxObject;
-import flixel.FlxSubState;
 import flixel.addons.editors.ogmo.FlxOgmo3Loader;
 import flixel.addons.effects.FlxTrail;
 import flixel.group.FlxGroup;
@@ -170,7 +169,7 @@ class PlayState extends GameState
 		inCombat = true;
 		player.active = false;
 		enemies.active = false;
-		combat.initCombat(health, enemy);
+		openSubState(new CombatSubState());
 	}
 
 	var pause:PauseSubState;

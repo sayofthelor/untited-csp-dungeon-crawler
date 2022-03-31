@@ -1,6 +1,10 @@
 package;
 
 import GameState;
+import flixel.FlxG;
+import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.addons.ui.FlxInputText;
 import flixel.math.FlxRandom;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
@@ -10,16 +14,22 @@ import flixel.util.FlxColor;
 
 using StringTools;
 
-class TitleScreenState extends GameState
+class TitleScreenState extends FlxState
 {
 	var funFactsArray:Array<String> = PathsAndStuff.grabText("funFacts.txt").split("\n");
 	var transingOut:Bool = false;
+
+	public static var ogmoName:String;
+	public static var levName:String;
 
 	override public function new(transingOut:Bool = false)
 	{
 		this.transingOut = transingOut;
 		super();
 	}
+
+	var ogmoInput:FlxInputText;
+	var levInput:FlxInputText;
 
 	override public function create()
 	{
@@ -41,6 +51,10 @@ class TitleScreenState extends GameState
 		var optionsButton:FlxButton = new FlxButton(10, 505 + playButton.height, "Options", playGame);
 		optionsButton.screenCenter(X);
 		add(optionsButton);
+		ogmoInput = new FlxInputText(3, 6 + funFactText.height, 200, "crawl");
+		levInput = new FlxInputText(3, 9 + funFactText.height + ogmoInput.height, 200, "lev1");
+		add(ogmoInput);
+		add(levInput);
 		if (transingOut)
 			transOut(FlxColor.RED);
 		super.create();
@@ -49,10 +63,38 @@ class TitleScreenState extends GameState
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
+		ogmoName = ogmoInput.text;
+		levName = levInput.text;
 	}
 
 	function playGame()
 	{
 		transIn(FlxColor.RED, new LoadingState(FlxColor.RED, new PlayState()));
+	}
+
+	public inline function transIn(color:FlxColor, desiredState:FlxState)
+	{
+		var transitionSprite = new FlxSprite(-FlxG.width, 0).makeGraphic(FlxG.width, FlxG.height, color, false);
+		add(transitionSprite);
+		FlxTween.tween(transitionSprite, {x: 0}, 0.5, {
+			ease: FlxEase.quintInOut,
+			onComplete: function(twn:FlxTween)
+			{
+				FlxG.switchState(desiredState);
+			}
+		});
+	}
+
+	public inline function transOut(color:FlxColor)
+	{
+		var transitionSprite = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, color, false);
+		add(transitionSprite);
+		FlxTween.tween(transitionSprite, {x: FlxG.width}, 0.5, {
+			ease: FlxEase.quintInOut,
+			onComplete: function(twn:FlxTween)
+			{
+				remove(transitionSprite);
+			}
+		});
 	}
 }
