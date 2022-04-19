@@ -8,6 +8,9 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 
+/*
+	Called when your health reaches 0, or the outcome != VICTORY
+ */
 class GameOverState extends GameState
 {
 	public override function create()

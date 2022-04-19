@@ -8,6 +8,10 @@ import flixel.tweens.FlxTween;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 
+/*
+	State I can build stuff on top of.
+	Mainly for a universally accessible transition function as of now, but I may add some things later.
+ */
 class GameState extends FlxState
 {
 	var transitionSprite:FlxSprite;

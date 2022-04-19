@@ -10,6 +10,8 @@ import flixel.addons.effects.FlxTrail;
 import flixel.group.FlxGroup;
 import flixel.tile.FlxTilemap;
 import flixel.util.FlxColor;
+import openfl.Lib;
+import openfl.events.UncaughtErrorEvent;
 
 using StringTools;
 using flixel.util.FlxSpriteUtil;
@@ -28,11 +30,11 @@ class PlayState extends GameState
 	var health:Int = 3;
 	var hud:HUD;
 	var enemyTrailGroup:FlxTypedGroup<FlxTrail>;
-	var combat:Combat;
 	var inCombat:Bool = false;
 
 	override public function create()
 	{
+		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, Main.onCrash);
 		FlxG.camera.zoom = 2;
 		map = LoadingState.level;
 		walls = map.loadTilemap(AssetPaths.tiles__png, "walls");
@@ -49,14 +51,11 @@ class PlayState extends GameState
 		add(enemies);
 		map.loadEntities(placeEnts, "entities");
 		playerTrail = new FlxTrail(player, 5, 3, 0.4, 0.05);
-		// enemies.forEachAlive(addEnemyTrail);
 		add(playerTrail);
 		add(player);
 		FlxG.camera.follow(player, TOPDOWN, 1);
 		hud = new HUD();
 		add(hud);
-		combat = new Combat();
-		add(combat);
 		transOut(FlxColor.RED);
 		super.create();
 	}
@@ -68,47 +67,16 @@ class PlayState extends GameState
 		if (FlxG.keys.pressed.SEVEN)
 			health = 0;
 		#end
-		if (FlxG.keys.pressed.ESCAPE)
+		if (FlxG.keys.justPressed.ESCAPE)
 			pauseGame();
 		hud.updateStuff(health, collectedCoins);
-		if (inCombat)
-		{
-			if (!combat.visible)
-			{
-				health = combat.playerHealth;
-				if (combat.outcome == VICTORY)
-				{
-					combat.enemy.kill();
-				}
-				else
-				{
-					combat.enemy.flicker();
-				}
-				inCombat = false;
-				player.active = true;
-				enemies.active = true;
-			}
-		}
-		else
-		{
-			FlxG.collide(player, walls);
-			FlxG.overlap(player, coins, collectCoin);
-			FlxG.collide(enemies, walls);
-			enemies.forEachAlive(checkEnemyVision);
-			FlxG.overlap(player, enemies, playerTouchEnemy);
-			if (health == 0)
-				transIn(FlxColor.RED, new GameOverState());
-		}
-	}
-
-	function addEnemyTrail(enemy:EnemyController)
-	{
-		var trail:FlxTrail;
-		if (enemy.type == BOSS)
-			trail = new FlxTrail(enemy, 24, 3, 0.4, 0.05)
-		else
-			trail = new FlxTrail(enemy, 8, 3, 0.4, 0.05);
-		enemyTrailGroup.add(trail);
+		FlxG.collide(player, walls);
+		FlxG.overlap(player, coins, collectCoin);
+		FlxG.collide(enemies, walls);
+		enemies.forEachAlive(checkEnemyVision);
+		FlxG.overlap(player, enemies, touchEnemy);
+		if (health == 0)
+			transIn(FlxColor.RED, new GameOverState());
 	}
 
 	function checkEnemyVision(enemy:EnemyController)
@@ -156,27 +124,23 @@ class PlayState extends GameState
 		}
 	}
 
-	function playerTouchEnemy(player:PlayerController, enemy:EnemyController)
+	function touchEnemy(player:PlayerController, enemy:EnemyController)
 	{
 		if (player.alive && player.exists && enemy.alive && enemy.exists && !enemy.isFlickering())
 		{
-			startCombat(enemy);
+			openCombat(enemy);
 		}
 	}
 
-	function startCombat(enemy:EnemyController)
+	function openCombat(enemy:EnemyController)
 	{
-		inCombat = true;
 		player.active = false;
 		enemies.active = false;
-		openSubState(new CombatSubState());
+		openSubState(new CombatSubState(enemy, health));
 	}
-
-	var pause:PauseSubState;
 
 	function pauseGame()
 	{
-		pause = new PauseSubState();
-		openSubState(pause);
+		openSubState(new PauseSubState());
 	}
 }

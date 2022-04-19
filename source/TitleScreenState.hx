@@ -14,6 +14,10 @@ import flixel.util.FlxColor;
 
 using StringTools;
 
+/*
+	Title screen state.
+	I don't really know why this extends FlxState instead of GameState but i can't be bothered to fix it right now.
+ */
 class TitleScreenState extends FlxState
 {
 	var funFactsArray:Array<String> = PathsAndStuff.grabText("funFacts.txt").split("\n");

@@ -14,7 +14,7 @@ enum EnemyType
 	BOSS;
 }
 
-// haxeflixel tutorial kek
+// Enemy controller code
 class EnemyController extends FlxSprite
 {
 	public var type:EnemyType;

@@ -5,7 +5,7 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.math.FlxPoint;
 
-// haxeflixel tutorial kek
+// Player controller class.
 class PlayerController extends FlxSprite
 {
 	public function new(x:Float = 0, y:Float = 0)

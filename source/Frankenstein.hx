@@ -1,5 +1,6 @@
 package;
 
+// mmmmmbrains
 class Frankenstein
 {
 	public var activeState:Float->Void;

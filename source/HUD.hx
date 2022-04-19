@@ -7,6 +7,10 @@ import flixel.util.FlxColor;
 
 using flixel.util.FlxSpriteUtil;
 
+/*
+	Heads-up display
+	Built off of the HUD class from the HaxeFlixel tutorial, but with more QOL stuff on top.
+ */
 class HUD extends FlxTypedGroup<FlxSprite>
 {
 	var hudBeeg:FlxSprite;

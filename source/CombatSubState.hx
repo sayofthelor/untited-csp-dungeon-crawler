@@ -1,5 +1,6 @@
 package;
 
+import EnemyController.EnemyType;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxSubState;
@@ -10,6 +11,8 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+import openfl.Lib;
+import openfl.events.UncaughtErrorEvent;
 
 using flixel.util.FlxSpriteUtil;
 
@@ -23,10 +26,23 @@ enum Outcometh
 
 class CombatSubState extends FlxSubState
 {
+	var enemy:EnemyController;
+	var health:Int;
+
+	override public function new(enemy:EnemyController, health:Int)
+	{
+		this.enemy = enemy;
+		this.health = health;
+		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, Main.onCrash);
+		super();
+	}
+
 	override function create()
 	{
 		FlxG.camera.flash(FlxColor.WHITE, 1);
 		var bossTimeText:FlxText = new FlxText(0, 0, 0, "C-C-C-COMBAT TIME!", 32);
+		if (enemy.type == EnemyType.BOSS)
+			bossTimeText.text = "B-B-B-BOSS TIME!";
 		bossTimeText.scrollFactor.set();
 		bossTimeText.screenCenter(X);
 		bossTimeText.screenCenter(Y);
@@ -46,7 +62,12 @@ class CombatSubState extends FlxSubState
 				FlxG.camera.shake(0.01, 0.5);
 				new FlxTimer().start(1, function(_)
 				{
-					FlxTween.tween(bossTimeText, {alpha: 0, "scale.x": 1, "scale.y": 1}, 0.5, {
+					FlxTween.tween(bossTimeText, {
+						alpha: 0,
+						"scale.x": 1,
+						"scale.y": 1,
+						y: bossTimeText.y + 100
+					}, 0.5, {
 						ease: FlxEase.quintInOut,
 						onComplete: function(_)
 						{
@@ -62,7 +83,11 @@ class CombatSubState extends FlxSubState
 	override function update(elapsed)
 	{
 		super.update(elapsed);
-		if (FlxG.keys.pressed.SEVEN)
+		if (FlxG.keys.pressed.EIGHT)
+		{
+			enemy.kill();
+			destroy();
 			close();
+		}
 	}
 }

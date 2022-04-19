@@ -11,6 +11,11 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 
+/*
+	Loading screen
+	Loads the level and shows a nice little screen when that happens.
+	For any would-be source modders, you should be able to skip this state after one time, provided you're not loading another level.
+ */
 class LoadingState extends GameState
 {
 	var desiredState:FlxState;

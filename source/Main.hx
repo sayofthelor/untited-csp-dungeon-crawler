@@ -18,6 +18,12 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
+/*
+	HaxeFlixel loader class thingy idk?
+	There's a crash handler in here, which is adapted from Forever Engine, kudos to Yoshubs!
+	It doesn't work all the time for some reason but it should give you a nice little error box when it does.
+	Polymod mods are also loaded here.
+ */
 class Main extends Sprite
 {
 	var fpsCounter:FPS;
@@ -25,33 +31,43 @@ class Main extends Sprite
 	public function new()
 	{
 		super();
-		#if desktop
+		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
+		#if cpp
 		trace("Loading mods...");
 		Polymod.init({
 			modRoot: "./",
 			dirs: ['mods'],
 			framework: FLIXEL
 		});
-		trace("Mods loaded.\nThese should auto-refresh if you want to open a custom level,\nbut if they don't, just restart the game.");
-
-		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
+		trace("\nMods loaded.\nThese should auto-refresh if you want to open a custom level,\nbut if they don't, just restart the game.");
 		#end
 		FlxG.save.bind('sayofthelor', 'DC');
 		fpsCounter = new FPS(3, 3, 0xFFFFFF);
-		addChild(new FlxGame(0, 0, TitleScreenState, 1, 120, 120, false, false));
+		var game:FlxGame = new FlxGame(0, 0, TitleScreenState, 1, 120, 120, false, false);
+		addChild(game);
 		addChild(fpsCounter);
 	}
 
-	#if desktop
-	var errorCrashFunnies:Array<String> = [
-		"Oops.", "Not a fun day, I take it?", "Sorry to bring your dungeon crawling to a halt.", "Have you tried Lore Engine?",
-		"Haxescript is quite a pain, yes?", "Also try Minecraft!", "Main.hx isn't supposed to hold this much.", "Flixel is wonderful.",
-		"SSS lesson for today is real fun.", "No controlly is cannoli.", "Not feeling it today, here's your error.", "Stream Kawai Sprite.",
-		"Did you remember to put @interpret?", "Class is screwed. Or maybe not, I don't know.", "How many headaches have you been through today?",
+	static var errorCrashFunnies:Array<String> = [
+		"Oops.",
+		"Not a fun day, I take it?",
+		"Sorry to bring your dungeon crawling to a halt.",
+		"Have you tried Lore Engine?",
+		"Haxescript is quite a pain, yes?",
+		"Also try Minecraft!",
+		"Main.hx isn't supposed to hold this much.",
+		"Flixel is wonderful.",
+		"SSS lesson for today is real fun.",
+		"No controlly is cannoli.",
+		"Not feeling it today, here's your error.",
+		"Stream Kawai Sprite.",
+		"Did you remember to put @interpret?",
+		"Class is screwed. Or maybe not, I don't know.",
+		"How many headaches have you been through today?",
 		"Interpreted code tip of the day: Make sure to import your classes."
 	];
 
-	public function onCrash(e:UncaughtErrorEvent):Void
+	public static function onCrash(e:UncaughtErrorEvent):Void
 	{
 		trace("ERROR");
 		var errorMessage:String = '';
@@ -92,5 +108,4 @@ class Main extends Sprite
 		Application.current.window.alert(errorMessage, "Fatal error");
 		Sys.exit(1);
 	}
-	#end
 }
