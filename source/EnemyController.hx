@@ -58,32 +58,32 @@ class EnemyController extends FlxSprite
 			return;
 		if (type == BOSS)
 			speed = 40;
-		if ((velocity.x != 0 || velocity.y != 0) && touching == NONE)
+		if ((velocity.x != 0 || velocity.y != 0) && touching == FlxObject.NONE)
 		{
 			if (Math.abs(velocity.x) > Math.abs(velocity.y))
 			{
 				if (velocity.x < 0)
-					facing = LEFT;
+					facing = FlxObject.LEFT;
 				else
-					facing = RIGHT;
+					facing = FlxObject.RIGHT;
 			}
 			else
 			{
 				if (velocity.y < 0)
-					facing = UP;
+					facing = FlxObject.UP;
 				else
-					facing = DOWN;
+					facing = FlxObject.DOWN;
 			}
 
 			switch (facing)
 			{
-				case LEFT, RIGHT:
+				case FlxObject.LEFT, FlxObject.RIGHT:
 					animation.play("lr");
 
-				case UP:
+				case FlxObject.UP:
 					animation.play("u");
 
-				case DOWN:
+				case FlxObject.DOWN:
 					animation.play("d");
 
 				case _:

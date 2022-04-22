@@ -36,8 +36,7 @@ class Main extends Sprite
 		trace("Loading mods...");
 		Polymod.init({
 			modRoot: "./",
-			dirs: ['mods'],
-			framework: FLIXEL
+			dirs: ['mods']
 		});
 		trace("\nMods loaded.\nThese should auto-refresh if you want to open a custom level,\nbut if they don't, just restart the game.");
 		#end

@@ -48,6 +48,23 @@ class PathsAndStuff
 		}
 	}
 
+	public static inline function snd(filename:String)
+		{
+			if (Assets.exists('mods/music/' + filename + '.wav'))
+				return 'mods/music/' + filename + '.wav';
+			else if (Assets.exists('assets/music/' + filename + '.wav'))
+				return 'assets/music/' + filename + '.wav';
+			else if (Assets.exists('mods/music/' + filename + '.ogg'))
+				return 'mods/music/' + filename + '.ogg';
+			else if (Assets.exists('assets/music/' + filename + '.ogg'))
+				return 'assets/music/' + filename + '.ogg';
+			else
+			{
+				trace('File not found: ' + filename);
+				return null;
+			}
+		}
+
 	public static inline function exists(filename:String)
 	{
 		if (Assets.exists("mods/" + filename))

@@ -18,8 +18,8 @@ using flixel.util.FlxSpriteUtil;
 
 class PlayState extends GameState
 {
-	var player:PlayerController;
-	var enemies:FlxTypedGroup<EnemyController>;
+	public static var player:PlayerController;
+	public static var enemies:FlxTypedGroup<EnemyController>;
 	var totalEnemies:Int = 0;
 	var playerTrail:FlxTrail;
 	var map:FlxOgmo3Loader;
@@ -136,7 +136,7 @@ class PlayState extends GameState
 	{
 		player.active = false;
 		enemies.active = false;
-		openSubState(new CombatSubState(enemy, health));
+		openSubState(new CombatSubState(enemy, health, player));
 	}
 
 	function pauseGame()

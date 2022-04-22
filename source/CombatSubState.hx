@@ -16,7 +16,7 @@ import openfl.events.UncaughtErrorEvent;
 
 using flixel.util.FlxSpriteUtil;
 
-enum Outcometh
+enum Outcome
 {
 	NONE;
 	VICTORY;
@@ -26,14 +26,14 @@ enum Outcometh
 
 class CombatSubState extends FlxSubState
 {
+	var player:PlayerController;
 	var enemy:EnemyController;
 	var health:Int;
 
-	override public function new(enemy:EnemyController, health:Int)
+	override public function new(enemy:EnemyController, health:Int, player:PlayerController)
 	{
 		this.enemy = enemy;
 		this.health = health;
-		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, Main.onCrash);
 		super();
 	}
 
@@ -44,8 +44,7 @@ class CombatSubState extends FlxSubState
 		if (enemy.type == EnemyType.BOSS)
 			bossTimeText.text = "B-B-B-BOSS TIME!";
 		bossTimeText.scrollFactor.set();
-		bossTimeText.screenCenter(X);
-		bossTimeText.screenCenter(Y);
+		bossTimeText.screenCenter();
 		var bsty:Float = bossTimeText.y;
 		bossTimeText.y = FlxG.height;
 		var overBG:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
@@ -77,6 +76,30 @@ class CombatSubState extends FlxSubState
 				});
 			}
 		});
+		new FlxTimer().start(1.5, function(_) {
+			var txt:FlxText;
+			if (enemy.type == BOSS)
+				{
+				FlxG.sound.playMusic(PathsAndStuff.snd("boss"));
+				FlxG.sound.music.fadeIn(1, 0, 0.4);
+				}
+			else
+				{
+				FlxG.sound.playMusic(PathsAndStuff.snd("combat"));
+				FlxG.sound.music.fadeIn(1, 0, 0.4);
+				txt = new FlxText(-200, 492, 0, "Technicolor Tussle - BLVKAROT", 16);
+				txt.alignment = LEFT;
+				txt.scrollFactor.set();
+				add(txt);
+				FlxTween.tween(txt, {x: 183 + txt.width}, 1.5, {ease: FlxEase.quintInOut, onComplete: function(_) {
+					new FlxTimer().start(2, function(_) {
+						FlxTween.tween(txt, {x:-200}, 1.5, {ease: FlxEase.quintInOut, onComplete: function(_) {
+							txt.destroy();
+						}});
+					});
+				}});
+				}
+		});
 		super.create();
 	}
 
@@ -86,7 +109,8 @@ class CombatSubState extends FlxSubState
 		if (FlxG.keys.pressed.EIGHT)
 		{
 			enemy.kill();
-			destroy();
+			PlayState.player.active = true;
+			PlayState.enemies.active = true;
 			close();
 		}
 	}
