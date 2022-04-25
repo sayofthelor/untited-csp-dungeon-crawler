@@ -1,3 +1,4 @@
+// GameState.hx
 package;
 
 import flixel.FlxG;
@@ -20,44 +21,46 @@ class GameState extends FlxState
 	{
 		super.create();
 		#if debug
-		var ret:FlxButton = new FlxButton(323, 183, "Back to Menu", btm);
+		var ret:FlxButton = new FlxButton(323, 183, "Back to Menu", function() transIn(FlxColor.RED, new TitleScreenState(true)));
 		add(ret);
-		}
 		#end
-		override function update(elapsed)
-
-		{
-			super.update(elapsed);
-		}
-
-		// thanks vidyagirl for the inline stuff
-		function btm()
-		{
-			transIn(FlxColor.RED, new TitleScreenState(true));
-		}
-		public inline function transIn(color:FlxColor, desiredState:FlxState)
-		{
-			transitionSprite = new FlxSprite(-FlxG.width, 0).makeGraphic(FlxG.width, FlxG.height, color, false);
-			add(transitionSprite);
-			FlxTween.tween(transitionSprite, {x: 0}, 0.5, {
-				ease: FlxEase.quintInOut,
-				onComplete: function(twn:FlxTween)
-				{
-					FlxG.switchState(desiredState);
-				}
-			});
-		}
-
-		public inline function transOut(color:FlxColor)
-		{
-			transitionSprite = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, color, false);
-			add(transitionSprite);
-			FlxTween.tween(transitionSprite, {x: FlxG.width}, 0.5, {
-				ease: FlxEase.quintInOut,
-				onComplete: function(twn:FlxTween)
-				{
-					remove(transitionSprite);
-				}
-			});
-		}
 	}
+
+	override function update(elapsed)
+	{
+		super.update(elapsed);
+	}
+
+	// thanks vidyagirl for the inline stuff
+
+	public inline function transIn(color:FlxColor, desiredState:FlxState)
+	{
+		transitionSprite = new FlxSprite(-FlxG.width, 0).makeGraphic(FlxG.width, FlxG.height, color, false);
+		add(transitionSprite);
+		FlxTween.tween(transitionSprite, {x: 0}, 0.5, {
+			ease: FlxEase.quintInOut,
+			onComplete: function(twn:FlxTween)
+			{
+				FlxG.switchState(desiredState);
+			}
+		});
+	}
+
+	public inline function transOut(color:FlxColor)
+	{
+		transitionSprite = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, color, false);
+		add(transitionSprite);
+		FlxTween.tween(transitionSprite, {x: FlxG.width}, 0.5, {
+			ease: FlxEase.quintInOut,
+			onComplete: function(twn:FlxTween)
+			{
+				remove(transitionSprite);
+			}
+		});
+	}
+
+	inline public static function funkinBoundTo(value:Float, min:Float, max:Float):Float // unbinds zoom lerp from framerate, thanks shadow mario
+	{
+		return Math.max(min, Math.min(max, value));
+	}
+}

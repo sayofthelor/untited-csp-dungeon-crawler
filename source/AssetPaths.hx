@@ -1,3 +1,4 @@
+// AssetPaths.hx
 package;
 
 // If you're looking for the asset management system for UDC, go to AssetPaths.hx

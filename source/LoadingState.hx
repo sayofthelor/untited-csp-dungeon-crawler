@@ -1,3 +1,4 @@
+// LoadingState.hx
 package;
 
 import GameState;

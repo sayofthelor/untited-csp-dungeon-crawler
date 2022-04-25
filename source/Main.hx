@@ -1,3 +1,4 @@
+// Mqin.hx
 package;
 
 import FPS;
@@ -60,10 +61,10 @@ class Main extends Sprite
 		"No controlly is cannoli.",
 		"Not feeling it today, here's your error.",
 		"Stream Kawai Sprite.",
-		"Did you remember to put @interpret?",
+		"Check for semicolons, kids.",
 		"Class is screwed. Or maybe not, I don't know.",
 		"How many headaches have you been through today?",
-		"Interpreted code tip of the day: Make sure to import your classes."
+		"Don't null-ly reference your objects, y'all!"
 	];
 
 	public static function onCrash(e:UncaughtErrorEvent):Void

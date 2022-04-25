@@ -1,17 +1,21 @@
+// Frankenstein.hx
 package;
 
-// mmmmmbrains
+/*
+	Kind of just a brain for the enemies.
+	Basically allows for there to be multiple "activity states". The rest is done in EnemyController.
+ */
 class Frankenstein
 {
-	public var activeState:Float->Void;
+	public var activity:Float->Void;
 
 	public function new(initialState:Float->Void)
 	{
-		activeState = initialState;
+		activity = initialState;
 	}
 
 	public function update(elapsed:Float)
 	{
-		activeState(elapsed);
+		activity(elapsed);
 	}
 }

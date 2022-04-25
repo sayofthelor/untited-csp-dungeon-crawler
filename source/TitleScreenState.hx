@@ -1,3 +1,4 @@
+// TitleScreenState.hx
 package;
 
 import GameState;
@@ -16,9 +17,10 @@ using StringTools;
 
 /*
 	Title screen state.
-	I don't really know why this extends FlxState instead of GameState but i can't be bothered to fix it right now.
+	This is also where mod levels can be loaded.
+	I'll work up a nice little front-end for this later but this is how you do it as of now.
  */
-class TitleScreenState extends FlxState
+class TitleScreenState extends GameState
 {
 	var funFactsArray:Array<String> = PathsAndStuff.grabText("funFacts.txt").split("\n");
 	var transingOut:Bool = false;
@@ -74,31 +76,5 @@ class TitleScreenState extends FlxState
 	function playGame()
 	{
 		transIn(FlxColor.RED, new LoadingState(FlxColor.RED, new PlayState()));
-	}
-
-	public inline function transIn(color:FlxColor, desiredState:FlxState)
-	{
-		var transitionSprite = new FlxSprite(-FlxG.width, 0).makeGraphic(FlxG.width, FlxG.height, color, false);
-		add(transitionSprite);
-		FlxTween.tween(transitionSprite, {x: 0}, 0.5, {
-			ease: FlxEase.quintInOut,
-			onComplete: function(twn:FlxTween)
-			{
-				FlxG.switchState(desiredState);
-			}
-		});
-	}
-
-	public inline function transOut(color:FlxColor)
-	{
-		var transitionSprite = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, color, false);
-		add(transitionSprite);
-		FlxTween.tween(transitionSprite, {x: FlxG.width}, 0.5, {
-			ease: FlxEase.quintInOut,
-			onComplete: function(twn:FlxTween)
-			{
-				remove(transitionSprite);
-			}
-		});
 	}
 }

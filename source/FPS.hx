@@ -1,7 +1,10 @@
+// FPS.hx
 package;
 
-// mostly just openfl.display.FPS, but with some nice extras
-// also removing all of the flash stuff because who the hell uses flash anyway?
+/*
+	Mostly just openfl.display.FPS, but with some nice extras.
+	I also removed all of the flash stuff because who the hell uses flash anyway?
+ */
 import openfl.Lib;
 import openfl.text.TextField;
 import openfl.text.TextFormat;

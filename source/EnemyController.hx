@@ -1,3 +1,4 @@
+// EnemyController.hx
 package;
 
 import flixel.FlxG;
@@ -8,7 +9,7 @@ import flixel.math.FlxVelocity;
 
 using flixel.util.FlxSpriteUtil;
 
-enum EnemyType
+enum EnmType
 {
 	NORMAL;
 	BOSS;
@@ -17,14 +18,14 @@ enum EnemyType
 // Enemy controller code
 class EnemyController extends FlxSprite
 {
-	public var type:EnemyType;
+	public var type:EnmType;
 	public var brain:Frankenstein;
 	public var idleTime:Float;
 	public var direction:Float;
 	public var sees:Bool;
 	public var playerPos:FlxPoint;
 
-	public function new(x:Float = 0, y:Float = 0, type:EnemyType)
+	public function new(x:Float = 0, y:Float = 0, type:EnmType)
 	{
 		super(x, y);
 		this.type = type;
@@ -97,7 +98,7 @@ class EnemyController extends FlxSprite
 	{
 		if (sees)
 		{
-			brain.activeState = chase;
+			brain.activity = chase;
 		}
 		else if (idleTime <= 0)
 		{
@@ -123,7 +124,7 @@ class EnemyController extends FlxSprite
 	{
 		if (!sees)
 		{
-			brain.activeState = idle;
+			brain.activity = idle;
 		}
 		else
 		{
@@ -131,7 +132,7 @@ class EnemyController extends FlxSprite
 		}
 	}
 
-	public function changeType(type:EnemyType)
+	public function changeType(type:EnmType)
 	{
 		if (this.type != type)
 		{

@@ -1,11 +1,10 @@
+// CombatSubState.hx
 package;
 
-import EnemyController.EnemyType;
+import EnemyController.EnmType;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxSubState;
-import flixel.addons.effects.chainable.FlxEffectSprite;
-import flixel.addons.effects.chainable.FlxWaveEffect;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -41,7 +40,7 @@ class CombatSubState extends FlxSubState
 	{
 		FlxG.camera.flash(FlxColor.WHITE, 1);
 		var bossTimeText:FlxText = new FlxText(0, 0, 0, "C-C-C-COMBAT TIME!", 32);
-		if (enemy.type == EnemyType.BOSS)
+		if (enemy.type == EnmType.BOSS)
 			bossTimeText.text = "B-B-B-BOSS TIME!";
 		bossTimeText.scrollFactor.set();
 		bossTimeText.screenCenter();

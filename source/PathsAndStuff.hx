@@ -1,3 +1,4 @@
+// PathsAndStuff.hx
 package;
 
 import openfl.Assets;

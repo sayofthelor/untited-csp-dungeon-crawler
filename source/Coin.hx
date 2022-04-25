@@ -1,3 +1,4 @@
+// Coin.hx
 package;
 
 import flixel.FlxSprite;

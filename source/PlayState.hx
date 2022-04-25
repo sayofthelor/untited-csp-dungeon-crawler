@@ -8,8 +8,10 @@ import flixel.FlxObject;
 import flixel.addons.editors.ogmo.FlxOgmo3Loader;
 import flixel.addons.effects.FlxTrail;
 import flixel.group.FlxGroup;
+import flixel.math.FlxMath;
 import flixel.tile.FlxTilemap;
 import flixel.util.FlxColor;
+import flixel.util.FlxTimer;
 import openfl.Lib;
 import openfl.events.UncaughtErrorEvent;
 
@@ -29,8 +31,10 @@ class PlayState extends GameState
 	var totalCoinAmt:Int = 0;
 	var health:Int = 3;
 	var hud:HUD;
-	var enemyTrailGroup:FlxTypedGroup<FlxTrail>;
 	var inCombat:Bool = false;
+	var defaultCamZoom:Float = 2;
+
+	public var canPause:Bool = true;
 
 	override public function create()
 	{
@@ -45,9 +49,7 @@ class PlayState extends GameState
 		coins = new FlxTypedGroup<Coin>();
 		add(coins);
 		player = new PlayerController();
-		enemyTrailGroup = new FlxTypedGroup<FlxTrail>();
 		enemies = new FlxTypedGroup<EnemyController>();
-		add(enemyTrailGroup);
 		add(enemies);
 		map.loadEntities(placeEnts, "entities");
 		playerTrail = new FlxTrail(player, 5, 3, 0.4, 0.05);
@@ -63,11 +65,10 @@ class PlayState extends GameState
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		#if debug
-		if (FlxG.keys.pressed.SEVEN)
+		FlxG.camera.zoom = FlxMath.lerp(defaultCamZoom, FlxG.camera.zoom, GameState.funkinBoundTo(1 - (elapsed * 3.125), 0, 1));
+		if /* REMOVE THIS LATER DUMBASS */ (FlxG.keys.pressed.SEVEN)
 			health = 0;
-		#end
-		if (FlxG.keys.justPressed.ESCAPE)
+		if (FlxG.keys.justPressed.ESCAPE && canPause)
 			pauseGame();
 		hud.updateStuff(health, collectedCoins);
 		FlxG.collide(player, walls);
@@ -76,7 +77,14 @@ class PlayState extends GameState
 		enemies.forEachAlive(checkEnemyVision);
 		FlxG.overlap(player, enemies, touchEnemy);
 		if (health == 0)
-			transIn(FlxColor.RED, new GameOverState());
+		{
+			player.active = false;
+			enemies.active = false;
+			defaultCamZoom = 1;
+			hud.visible = false;
+			canPause = false;
+			new FlxTimer().start(2, function(_) transIn(FlxColor.RED, new GameOverState()));
+		}
 	}
 
 	function checkEnemyVision(enemy:EnemyController)
